@@ -1,3 +1,4 @@
+//-----------------------------------------------ARTIFACT SET-----------------------------------------------
 const SetName = ["Emblem of Severed Fates", "Shimenawa's Reminiscence"]
 // "Emblem of Severed Fates", "Shimenawa's Reminiscence"
 
@@ -9,9 +10,13 @@ if (SetChoose == 1) {
   ChosenSet = SetName[1]
 }
 
+//-----------------------------------------------ARTIFACT TYPE-----------------------------------------------
+
 const Type = ["Flower", "Feather", "Sands", "Goblet", "Circlet"]
 var TypeChoose = math.floor(math.random() * Type.length)
 var ChosenType = Type[TypeChoose]
+
+//-----------------------------------------------ARTIFACT MAINSTAT-----------------------------------------------
 
 var MainStat = []
 var MainStatRoll = math.ceil(math.random() * 100)
@@ -53,7 +58,7 @@ var MainStatIndex = MainChance.indexOf(MainStatChoose) - 1
 ChosenMainStat = MainStat[MainStatIndex]
 //[HP%,ATK%,DEF%,ER%,EM] , ie index [2] = DEF%
 
-//-----------------------------SUBSTAT-----------------------------------------------
+//-----------------------------------------------SUBSTAT-----------------------------------------------
 
 var SubStatNumberRoll = math.ceil(math.random() * 4)
 var StartingSubstatNumber = []
