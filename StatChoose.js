@@ -1,4 +1,4 @@
-const SetName = ["EOSF", "SR"]
+const SetName = ["Emblem of Severed Fates", "Shimenawa's Reminiscence"]
 // "Emblem of Severed Fates", "Shimenawa's Reminiscence"
 
 var SetChoose = math.ceil(math.random() * 2)
@@ -10,81 +10,86 @@ if (SetChoose == 1) {
 }
 
 const Type = ["Flower", "Feather", "Sands", "Goblet", "Circlet"]
-
 var TypeChoose = math.floor(math.random() * Type.length)
 var ChosenType = Type[TypeChoose]
 
-/*
-if (TypeChoose == 1) {
-  ChosenType = Type[0]
-} else if (TypeChoose == 2) {
-  ChosenType = Type[1]
-} else if (TypeChoose == 3) {
-  ChosenType = Type[2]
-} else if (TypeChoose == 4) {
-  ChosenType = Type[3]
-} else if (TypeChoose == 5) {
-  ChosenType = Type[4]
-}
-*/
+var MainStat = []
+var MainStatRoll = math.ceil(math.random() * 100)
+var ChosenMainStat = []
+var MainChance = [0]
 
-var Mainstat = []
-const FlowerMainStat = ["HP"]
-const FeatherMainStat = ["ATK"]
-const SandsMainStat = ["HP%", "ATK%", "DEF%", "ER%", "EM"]
-const GobletMainStat = ["Ele%"]
-const CircMainStat = ["HP%", "ATK%", "DEF%", "HEAL%", "CR%", "CD%", "EM"]
-/*
-HP%,ATK%,DEF%	22.00%
-Healing%,CR,CD	10.00%
-Elemental Mastery	4.00%
-*/
 if (ChosenType == Type[0]) {
-  Mainstat = FlowerMainStat
+  MainStat = ["HP"]
+  MainChanceIndiv =[100]
+
 } else if (ChosenType == Type[1]) {
-  Mainstat = FeatherMainStat
+  MainStat = ["ATK"]
+  MainChanceIndiv =[100]
+
 } else if (ChosenType == Type[2]) {
-  Mainstat = SandsMainStat
+  MainStat = ["HP%", "ATK%", "DEF%", "ER%", "EM"]
+  MainChanceIndiv = [27, 27, 26, 10, 10] 
+
 } else if (ChosenType == Type[3]) {
-  Mainstat = GobletMainStat
+  MainStat = ["HP%", "ATK%", "DEF%", "Pyro%", "Electro%", "Cryo%", "Hydro%", "Anemo%", "Geo%", "Phys%", "EM"]
+  MainChanceIndiv = [21, 21, 20, 5, 5, 5, 5, 5, 5, 5, 3]
+
 } else if (ChosenType == Type[4]) {
-  Mainstat = CircMainStat
+  MainStat = ["HP%", "ATK%", "DEF%", "Heal%", "CR%", "CD%", "EM"]
+  MainChanceIndiv = [22, 22, 22, 10, 10, 10, 4]
 }
 
-  var MainStatChoose = math.ceil(math.random() * 100)
-  var ChosenMainStat = []
-  if (0 < MainStatChoose && MainStatChoose <= 22) {
-    ChosenMainStat = MainStat[0]
-  } else if (22 < MainStatChoose && MainStatChoose <= 44) {
-    ChosenMainStat = MainStat[1]
-  } else if (44 < MainStatChoose && MainStatChoose <= 66) {
-    ChosenMainStat = MainStat[2]
-  } else if (66 < MainStatChoose && MainStatChoose <= 76) {
-    ChosenMainStat = MainStat[3]
-  } else if (76 < MainStatChoose && MainStatChoose <= 86) {
-    ChosenMainStat = MainStat[4]
-  } else if (86 < MainStatChoose && MainStatChoose <= 96) {
-    ChosenMainStat = MainStat[5]
-  } else if (96 < MainStatChoose && MainStatChoose <= 100) {
-    ChosenMainStat = MainStat[6]
+for (i = 1; i < MainChanceIndiv.length + 1; i++) {
+  MainChance.push(MainChanceIndiv[i - 1] + MainChance[i - 1])
+}
+//starts at 0, adds first chance (27) to array, then 27 + second chance (27) = 54, 54 + third chance (26) = 80 and so on [27,54,80,90,100]
+
+var MainStatChoose = MainChance.find(element => element > MainStatRoll)
+//[27,54,80,90,100], makes the random roll of 1-100 become an array value ie 64->80
+
+var MainStatIndex = MainChance.indexOf(MainStatChoose) - 1
+//gives chosen index array, 80 = index [2]
+
+ChosenMainStat = MainStat[MainStatIndex]
+//[HP%,ATK%,DEF%,ER%,EM] , ie index [2] = DEF%
+
+//-----------------------------SUBSTAT-----------------------------------------------
+
+var SubStatNumberRoll = math.ceil(math.random() * 4)
+var StartingSubstatNumber = []
+if (SubStatNumberRoll == 4) {
+  StartingSubstatNumber = 4
+} else {
+  StartingSubstatNumber = 3
+}
+//gimana chancenya berubah 
+//gimana biar ga sama dengan main stat dan substat 
+//high roll low roll substat
+
+const CircSubStat = ["HP", "ATK", "DEF", "HP%", "ATK%", "DEF%", "ER%", "EM", "Crit%"]
+const CircSubChanceIndiv = [14, 14, 14, 10, 10, 10, 10, 10, 8]
+var CircSubChance = [0]
+
+for (i = 1; i < CircSubChanceIndiv.length + 1; i++) {
+  CircSubChance.push(CircSubChanceIndiv[i - 1] + CircSubChance[i - 1])
+}
+var Substat = []
+
+for (i = 0; i < StartingSubstatNumber; i++) {
+  var SubStatRoll = math.ceil(math.random() * 100)
+
+  SubStatChoose = CircSubChance.find(element => element > SubStatRoll)
+  SubStatIndex = CircSubChance.indexOf(SubStatChoose) - 1
+  ChosenSubStat = CircSubStat[SubStatIndex]
+  Substat.push(ChosenSubStat)
+}
+/*
+HP ATK DEF 14.63%
+HP%	DEF% ATK% ER% EM 9.76%
+CRIT%	7.31%
+*/
 
 
-  }
 
-  const CircSubStat = ["HP%", "HP", "ATK%", "ATK", "DEF%", "DEF", "ER%", "EM", "Crit%"]
-  /*
-  HP	14.63%
-  ATK	14.63%
-  DEF	14.63%
-  HP%	9.76%
-  ATK%	9.76%
-  DEF%	9.76%
-  Energy Recharge%	9.76%
-  Elemental Mastery	9.76%
-  CRIT DMG%	7.31%
-  */
-
-  var SubStatChoose = math.ceil(math.random() * 1000)
-  var ChosenSubStat = []
-
-  console.log(ChosenMainStat + " " + ChosenSet + " " + ChosenType)
+console.log(ChosenMainStat + " " + ChosenSet + " " + ChosenType)
+console.log("Your substats are : " + Substat+ " (still broken)")
